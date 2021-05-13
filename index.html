@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>自制轮播图</title>
+	</head>
+	
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+			font-family: arial;
+		}img{
+            width: 100%;
+            height: 100%;
+			border-radius: 5px;
+        }
+		body{
+			/*弹性布局，让页面元素垂直水平居中*/
+			background-color: #2F4F4F;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;    /*100vh垂直居中*/
+		}
+		.coniainer{
+			padding: 5px;
+			padding-right: 0;
+			width: 1100px;
+			height: 500px;
+			background-color: rgb(50, 134, 106);
+			border-radius: 5px;
+			box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+		}
+		.left{
+			width: 80%;
+			height: 100%;
+			float: left;
+		}
+		.right{
+			width: 20%;
+			height: 100%;
+			float: left;
+            display: flex;
+			justify-content: center;
+			align-items: center;
+            flex-direction: column;
+		}
+		.right div{
+			width: 100%;
+			height: 20%;
+			overflow: hidden;
+		}
+		.imgs{
+			transform:scale(0.95);
+		}
+        .first_img{
+            visibility: hidden;
+        }
+		
+        .right_ani{
+            animation:right_animations 0.8s;
+            animation-fill-mode: forwards;
+        }
+        .left_ani{
+            animation:left_animations 0.8s;
+            animation-fill-mode: forwards;
+        }
+		@-webkit-keyframes right_animations{
+			from{
+				opacity: 1;
+				transform: translateX(0);
+			}
+			to{
+				opacity: 0;
+				transform: translateX(-100%);
+			}
+		}
+		@-webkit-keyframes left_animations{
+			from{
+				opacity: 0;
+				transform:scale(0.1);
+				
+			}
+			to{
+				opacity: 1;
+				transform:scale(1);
+			}
+		}
+	</style>
+	<body>
+		<div class="coniainer">
+			<div class="left">
+				<img src="pics/bg0.jpg" />
+			</div>
+			<div>
+				
+			</div>
+			<div class="right">
+				<div><img class="imgs" src="pics/bg0.jpg"/></div>
+                <div><img class="imgs" src="pics/bg1.jpg"/></div>
+                <div><img class="imgs" src="pics/bg2.jpg"/></div>
+                <div><img class="imgs" src="pics/bg3.jpg"/></div>
+                <div><img class="imgs" src="pics/bg4.jpg"/></div>
+			</div>
+		</div>
+	</body>
+	<script>
+		let bigimg=document.getElementsByClassName("left")[0].getElementsByTagName("img")[0]
+        let imgs=document.getElementsByClassName("imgs")
+		let len=imgs.length
+		let frontOne=4,thisOne=0
+		let timer=null
+
+		function refresh(){
+			for(let i=0;i<len;i++){
+				imgs[i].className="imgs"
+			}
+			bigimg.classList.remove("left_ani")
+		}
+		function change(f_o,t_o){
+			bigimg.src='pics/bg'+t_o+'.jpg'
+			bigimg.classList.add("left_ani")
+			imgs[t_o].className="imgs right_ani"
+			imgs[f_o].className="imgs"
+		}
+		for(let i=0;i<len;i++){
+			imgs[i].onmouseover=function(){
+				refresh()
+
+				thisOne=i
+				frontOne=thisOne-1
+				if(thisOne==0)frontOne=4
+
+				change(frontOne,thisOne)
+				clearInterval(timer)
+			}
+			imgs[i].onmouseout=function(){
+				auto_lunbo()
+			}
+		}
+		function auto_lunbo(){      
+            timer=setInterval(()=>{
+				refresh()
+				change(frontOne,thisOne)
+				thisOne+=1
+				if(thisOne==len)thisOne=0
+
+				if(thisOne==0)frontOne=len-1
+				else{frontOne=thisOne-1}
+			},1500)
+		}auto_lunbo()
+	</script>
+</html>
