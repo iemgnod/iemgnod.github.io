@@ -1,154 +1,102 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="UTF-8">
-		<title>自制轮播图</title>
-	</head>
-	
-	<style>
-		*{
-			margin: 0;
-			padding: 0;
-			font-family: arial;
-		}img{
-            width: 100%;
-            height: 100%;
-			border-radius: 5px;
-        }
-		body{
-			/*弹性布局，让页面元素垂直水平居中*/
-			background-color: #2F4F4F;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			height: 100vh;    /*100vh垂直居中*/
-		}
-		.coniainer{
-			padding: 5px;
-			padding-right: 0;
-			width: 1100px;
-			height: 500px;
-			background-color: rgb(50, 134, 106);
-			border-radius: 5px;
-			box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
-		}
-		.left{
-			width: 80%;
-			height: 100%;
-			float: left;
-		}
-		.right{
-			width: 20%;
-			height: 100%;
-			float: left;
-            display: flex;
-			justify-content: center;
-			align-items: center;
-            flex-direction: column;
-		}
-		.right div{
-			width: 100%;
-			height: 20%;
-			overflow: hidden;
-		}
-		.imgs{
-			transform:scale(0.95);
-		}
-        .first_img{
-            visibility: hidden;
-        }
-		
-        .right_ani{
-            animation:right_animations 0.8s;
-            animation-fill-mode: forwards;
-        }
-        .left_ani{
-            animation:left_animations 0.8s;
-            animation-fill-mode: forwards;
-        }
-		@-webkit-keyframes right_animations{
-			from{
-				opacity: 1;
-				transform: translateX(0);
-			}
-			to{
-				opacity: 0;
-				transform: translateX(-100%);
-			}
-		}
-		@-webkit-keyframes left_animations{
-			from{
-				opacity: 0;
-				transform:scale(0.1);
-				
-			}
-			to{
-				opacity: 1;
-				transform:scale(1);
-			}
-		}
-	</style>
-	<body>
-		<div class="coniainer">
-			<div class="left">
-				<img src="pics/bg0.jpg" />
-			</div>
-			<div>
-				
-			</div>
-			<div class="right">
-				<div><img class="imgs" src="pics/bg0.jpg"/></div>
-                <div><img class="imgs" src="pics/bg1.jpg"/></div>
-                <div><img class="imgs" src="pics/bg2.jpg"/></div>
-                <div><img class="imgs" src="pics/bg3.jpg"/></div>
-                <div><img class="imgs" src="pics/bg4.jpg"/></div>
-			</div>
-		</div>
-	</body>
-	<script>
-		let bigimg=document.getElementsByClassName("left")[0].getElementsByTagName("img")[0]
-        let imgs=document.getElementsByClassName("imgs")
-		let len=imgs.length
-		let frontOne=4,thisOne=0
-		let timer=null
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>css动画</title>
+</head>
+<style>
+    .trans_2d{
+        position: fixed;
+        left: 20%;
+        top: 10%;
+        width:100px;
+        height:100px;
+        background-color:grey;
+    }
+    .trans_2d:hover{
+        /* translate():向x,y方向移动距离 */
+        transform: translate(50px,50px);
+        
+        /* rotate():旋转角度 */
+        /* transform: rotate(60deg); */
 
-		function refresh(){
-			for(let i=0;i<len;i++){
-				imgs[i].className="imgs"
-			}
-			bigimg.classList.remove("left_ani")
-		}
-		function change(f_o,t_o){
-			bigimg.src='pics/bg'+t_o+'.jpg'
-			bigimg.classList.add("left_ani")
-			imgs[t_o].className="imgs right_ani"
-			imgs[f_o].className="imgs"
-		}
-		for(let i=0;i<len;i++){
-			imgs[i].onmouseover=function(){
-				refresh()
+        /* scale()宽度和高度倍数放大 */
+        /* scaleX()和scaleY()同理，只是拆开来 */
+        /* transform: scale(1.5); */
+        
+        /* skew()沿x,y轴倾斜指定角度 */
+        /* skewX()和skewY()同理，只是拆开来 */
+        /* transform: skew(20deg,10deg); */
 
-				thisOne=i
-				frontOne=thisOne-1
-				if(thisOne==0)frontOne=4
+        /* matrix(scaleX(),skewX(),skewY(),scaleY(),translateX(),translateY()) */
+        /* transform: matrix(1,-0.3,0,1,0,0); */
+    }
+    .trans_3d{
+        position: fixed;
+        left: 20%;
+        top:35%;
+        width:100px;
+        height:100px;
+        background-color:grey;
+    }
+    .trans_3d:hover{
+        /* translateX/Y/Z():向x/y/z方向移动距离 */
+        /* transform: translate3d(50px,50px,50px); */
+        
+        /* rotateX/Y/Z():沿x/y/z方向旋转角度 */
+        /* transform: rotateY(180deg); */
 
-				change(frontOne,thisOne)
-				clearInterval(timer)
-			}
-			imgs[i].onmouseout=function(){
-				auto_lunbo()
-			}
-		}
-		function auto_lunbo(){      
-            timer=setInterval(()=>{
-				refresh()
-				change(frontOne,thisOne)
-				thisOne+=1
-				if(thisOne==len)thisOne=0
+        /* scale3d(x,y,z)沿x,y,z方向倍数放大 */
+        /* scaleX/Y/Z()同理，只是拆开来 */
+        transform: scalex(1.5);
+    }
+    .trans_run{
+        position: fixed;
+        left: 20%;
+        top:60%;
+        width:100px;
+        height:100px;
+        background-color:grey;
+        
+        /* 变换属性名，变换持续时间，速度曲线，延迟时间 */
+        transition: transform 1s linear 0s;
+    }
+    .trans_run:hover{
+        transform: rotate(360deg) scale(1.5);
+    }
+    
+    .animat_test{
+        position: fixed;
+        left: 60%;
+        top:35%;
+        width:100px;
+        height:100px;
+        background-color:grey;
 
-				if(thisOne==0)frontOne=len-1
-				else{frontOne=thisOne-1}
-			},1500)
-		}auto_lunbo()
-	</script>
+        /* 动画有以下8中属性：
+        @keyframes：定义动画名称，并将其绑定到需要的元素
+        animation-name：绑定的动画名称
+        animation-duration：动画持续时间
+        animation-delay：动画延时执行
+        animation-iteration-count：动画执行次数
+        animation-direction：设置反向或交替运动
+        animation-timing-function：规定速度曲线
+        animation-fill-mode：指定动画填充模式（保留某一帧的样式值） */
+        /* 合在一起写： */
+        animation:example 4s 0s 2 normal linear forwards
+    }
+    @keyframes example {
+        0%   {background-color:grey; left:60%; top:35%;}
+        25%  {background-color:yellow; left:70%; top:35%;}
+        50%  {background-color:blue; left:70%; top:50%;}
+        75%  {background-color:green; left:60%; top:50%;}
+        100% {background-color:grey; left:60%; top:35%;}
+    }
+</style>
+<body>
+    <div class="trans_2d">transform_2d属性测试</div>
+    <div class="trans_3d">transform_3d属性测试</div>
+    <div class="trans_run">transform_过渡测试</div>
+    <div class="animat_test">animation_动画测试</div>
+</body>
 </html>
